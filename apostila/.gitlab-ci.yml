@@ -1,0 +1,30 @@
+stages:
+    - build
+    - dropbox
+    - alumni
+
+build-apostila:
+    script: "build-apostila.sh"
+    stage: build
+    artifacts:
+        name: "Apostilas"
+        paths:
+            - apostilas/
+
+upload-dropbox:
+    script: "upload-dropbox.sh"
+    stage: dropbox
+    only:
+        refs:
+            - master
+    dependencies:
+        - build-apostila
+
+upload-alumni:
+    script: "upload-alumni.sh"
+    stage: alumni
+    only:
+        refs:
+            - master
+    dependencies:
+        - build-apostila
