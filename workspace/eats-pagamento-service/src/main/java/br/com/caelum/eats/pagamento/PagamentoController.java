@@ -1,7 +1,13 @@
 package br.com.caelum.eats.pagamento;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,21 +31,56 @@ class PagamentoController {
 	private PedidoRestClient pedidoClient;
 
 	@GetMapping("/{id}")
-	PagamentoDto detalha(@PathVariable("id") Long id) {
+	EntityModel<PagamentoDto> detalha(@PathVariable("id") Long id) {
 		Pagamento pagamento = pagamentoRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
-		return new PagamentoDto(pagamento);
+
+		List<Link> links = new ArrayList<>();
+
+		Link self = linkTo(methodOn(PagamentoController.class).detalha(id)).withSelfRel();
+		links.add(self);
+
+		if (Pagamento.Status.CRIADO.equals(pagamento.getStatus())) {
+			Link confirma = linkTo(methodOn(PagamentoController.class).confirma(id)).withRel("confirma");
+			links.add(confirma);
+
+			Link cancela = linkTo(methodOn(PagamentoController.class).cancela(id)).withRel("cancela");
+			links.add(cancela);
+		}
+
+		PagamentoDto dto = new PagamentoDto(pagamento);
+		EntityModel<PagamentoDto> resource = EntityModel.of(dto, links);
+
+		return resource;
 	}
 
 	@PostMapping
-	ResponseEntity<PagamentoDto> cria(@RequestBody Pagamento pagamento, UriComponentsBuilder uriBuilder) {
+	ResponseEntity<EntityModel<PagamentoDto>> cria(@RequestBody Pagamento pagamento, UriComponentsBuilder uriBuilder) {
+
 		pagamento.setStatus(Pagamento.Status.CRIADO);
+
 		Pagamento salvo = pagamentoRepo.save(pagamento);
 		URI path = uriBuilder.path("/pagamentos/{id}").buildAndExpand(salvo.getId()).toUri();
-		return ResponseEntity.created(path).body(new PagamentoDto(salvo));
+		PagamentoDto dto = new PagamentoDto(salvo);
+
+		Long id = salvo.getId();
+
+		List<Link> links = new ArrayList<>();
+
+		Link self = linkTo(methodOn(PagamentoController.class).detalha(id)).withSelfRel();
+		links.add(self);
+
+		Link confirma = linkTo(methodOn(PagamentoController.class).confirma(id)).withRel("confirma");
+		links.add(confirma);
+
+		Link cancela = linkTo(methodOn(PagamentoController.class).cancela(id)).withRel("cancelaa");
+		links.add(cancela);
+
+		EntityModel<PagamentoDto> resource = EntityModel.of(dto, links);
+		return ResponseEntity.created(path).body(resource);
 	}
 
 	@PutMapping("/{id}")
-	PagamentoDto confirma(@PathVariable("id") Long id) {
+	EntityModel<PagamentoDto> confirma(@PathVariable("id") Long id) {
 		Pagamento pagamento = pagamentoRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
 		pagamento.setStatus(Pagamento.Status.CONFIRMADO);
 		pagamentoRepo.save(pagamento);
@@ -47,15 +88,34 @@ class PagamentoController {
 		Long pedidoId = pagamento.getPedidoId();
 		pedidoClient.avisaQueFoiPago(pedidoId);
 
-		return new PagamentoDto(pagamento);
+		List<Link> links = new ArrayList<>();
+
+		Link self = linkTo(methodOn(PagamentoController.class).detalha(id)).withSelfRel();
+		links.add(self);
+
+		PagamentoDto dto = new PagamentoDto(pagamento);
+
+		EntityModel<PagamentoDto> resource = EntityModel.of(dto, links);
+
+		return resource;
 	}
 
 	@DeleteMapping("/{id}")
-	PagamentoDto cancela(@PathVariable("id") Long id) {
+	EntityModel<PagamentoDto> cancela(@PathVariable("id") Long id) {
 		Pagamento pagamento = pagamentoRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
 		pagamento.setStatus(Pagamento.Status.CANCELADO);
 		pagamentoRepo.save(pagamento);
-		return new PagamentoDto(pagamento);
+
+		List<Link> links = new ArrayList<>();
+
+		Link self = linkTo(methodOn(PagamentoController.class).detalha(id)).withSelfRel();
+		links.add(self);
+
+		PagamentoDto dto = new PagamentoDto(pagamento);
+
+		EntityModel<PagamentoDto> resource = EntityModel.of(dto, links);
+
+		return resource;
 	}
 
 }
