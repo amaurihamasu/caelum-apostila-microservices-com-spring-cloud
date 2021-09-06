@@ -20,13 +20,13 @@ export class PagamentoService {
   }
 
   confirma(pagamento): Observable<any> {
-    const URL = pagamento._links.confirma.href;
-    return this.http.put(URL, null);
+    const linkConfirma = pagamento._links.confirma;
+    return this.http.request(linkConfirma.method, linkConfirma.href);
   }
 
   cancela(pagamento): Observable<any> {
-    const URL = pagamento._links.cancela.href;
-    return this.http.delete(URL);
+    const linkCancela = pagamento._links.cancela;
+    return this.http.request(linkCancela.method, linkCancela.href);
   }
 
   private ajusteIds = (pagamento) => {
