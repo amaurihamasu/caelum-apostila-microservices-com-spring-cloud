@@ -2,9 +2,9 @@ package br.com.caelum.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulServer;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
-@EnableZuulServer
+@EnableZuulProxy
 @SpringBootApplication
 public class ApiGatewayApplication {
 
