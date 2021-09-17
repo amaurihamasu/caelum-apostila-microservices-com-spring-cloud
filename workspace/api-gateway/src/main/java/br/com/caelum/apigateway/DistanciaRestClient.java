@@ -7,20 +7,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class DistanciaRestClient {
+class DistanciaRestClient {
 
 	private RestTemplate restTemplate;
-	private String distanciaServiceURL;
+	private String distanciaServiceUrl;
 
-	public DistanciaRestClient(RestTemplate restTemplate,
-			@Value("${zuul.routes.distancia.url}") String distanciaServiceURL) {
+	DistanciaRestClient(RestTemplate restTemplate, @Value("${configuracao.distancia.service.url}") String distanciaServiceUrl) {
 		this.restTemplate = restTemplate;
-		this.distanciaServiceURL = distanciaServiceURL;
+		this.distanciaServiceUrl = distanciaServiceUrl;
 	}
 
 	Map<String, Object> porCepEId(String cep, Long restauranteId) {
-		String URL = distanciaServiceURL + "/restaurantes/" + cep + "/restaurante/" + restauranteId;
-		return restTemplate.getForObject(URL, Map.class);
+		String url = distanciaServiceUrl + "/restaurantes/" + cep + "/restaurante/" + restauranteId;
+		return restTemplate.getForObject(url, Map.class);
 	}
 
 }
