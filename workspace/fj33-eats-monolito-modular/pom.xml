@@ -30,7 +30,6 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -42,5 +41,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 </project>

@@ -23,5 +23,4 @@ class RestauranteComDistanciaController {
 		dadosRestaurante.putAll(dadosDistancia);
 		return dadosRestaurante;
 	}
-
 }
