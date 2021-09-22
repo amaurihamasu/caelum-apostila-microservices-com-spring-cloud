@@ -57,7 +57,7 @@ class DistanciaService {
 	}
 
 	private BigDecimal calculaDistancia() {
-		this.simulaDemora();
+		//this.simulaDemora();
 		return new BigDecimal(Math.random() * 15);
 	}
 
