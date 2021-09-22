@@ -29,7 +29,7 @@ class RestauranteController {
 	RestauranteDto detalha(@PathVariable("id") Long id) {
 		Restaurante restaurante = restauranteRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
 
-		this.simulaDemoraNaResposta();
+		//this.simulaDemoraNaResposta();
 
 		return new RestauranteDto(restaurante);
 	}
