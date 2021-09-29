@@ -28,7 +28,18 @@ class RestauranteController {
 	@GetMapping("/restaurantes/{id}")
 	RestauranteDto detalha(@PathVariable("id") Long id) {
 		Restaurante restaurante = restauranteRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+
+		//this.simulaDemoraNaResposta();
+
 		return new RestauranteDto(restaurante);
+	}
+
+	private void simulaDemoraNaResposta() {
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@GetMapping("/parceiros/restaurantes/do-usuario/{username}")
