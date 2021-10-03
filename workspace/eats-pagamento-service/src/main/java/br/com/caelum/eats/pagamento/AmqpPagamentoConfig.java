@@ -14,7 +14,7 @@ class AmqpPagamentoConfig {
 	static interface PagamentoSource {
 
 		@Output
-		MessageChannel pagamentosConfirmardos();
+		MessageChannel pagamentosConfirmados();
 
 	}
 

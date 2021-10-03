@@ -16,7 +16,7 @@ class NotificadorPagamentoConfirmado {
 		Long pagamentoId = pagamento.getId();
 		Long pedidoId = pagamento.getPedidoId();
 		PagamentoConfirmado confirmado = new PagamentoConfirmado(pagamentoId, pedidoId);
-		source.pagamentosConfirmardos().send(MessageBuilder.withPayload(confirmado).build());
+		source.pagamentosConfirmados().send(MessageBuilder.withPayload(confirmado).build());
 	}
 
 }

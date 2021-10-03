@@ -15,7 +15,7 @@ class AmqpNotaFiscalConfig {
 		String PAGAMENTOS_CONFIRMADOS = "pagamentosConfirmados";
 
 		@Input
-		SubscribableChannel pagamentoConfirmados();
+		SubscribableChannel pagamentosConfirmados();
 	}
 
 }
