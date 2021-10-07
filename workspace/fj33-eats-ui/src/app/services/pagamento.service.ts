@@ -15,21 +15,21 @@ export class PagamentoService {
   }
 
   cria(pagamento): Observable<any> {
-    this.ajusteIds(pagamento);
+    this.ajustaIds(pagamento);
     return this.http.post(`${this.API}`, pagamento);
   }
 
   confirma(pagamento): Observable<any> {
-    const linkConfirma = pagamento._links.confirma;
-    return this.http.request(linkConfirma.method, linkConfirma.href);
+    this.ajustaIds(pagamento);
+    return this.http.put(`${this.API}/${pagamento.id}`, null);
   }
 
   cancela(pagamento): Observable<any> {
-    const linkCancela = pagamento._links.cancela;
-    return this.http.request(linkCancela.method, linkCancela.href);
+    this.ajustaIds(pagamento);
+    return this.http.delete(`${this.API}/${pagamento.id}`);
   }
 
-  private ajusteIds = (pagamento) => {
+  private ajustaIds(pagamento) {
     pagamento.formaDePagamentoId = pagamento.formaDePagamentoId || pagamento.formaDePagamento.id;
     pagamento.pedidoId = pagamento.pedidoId || pagamento.pedido.id;
   }
