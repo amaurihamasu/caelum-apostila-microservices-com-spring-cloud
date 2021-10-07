@@ -23,10 +23,6 @@ export class RestauranteService {
     return this.http.get(`${this.API}/restaurantes?ids=${ids}`);
   }
 
-  porCepEIdComDistancia(cep: string, restauranteId: string): Observable<any> {
-    return this.http.get(`${this.API}/restaurante-com-distancia/${cep}/restaurante/${restauranteId}`);
-  }
-
   maisProximosPorCep(cep: string): Observable<any> {
     return this.http.get(`${this.DISTANCIA_API}/restaurantes/mais-proximos/${cep}`);
   }
@@ -39,7 +35,7 @@ export class RestauranteService {
     return this.http.get(`${this.DISTANCIA_API}/restaurantes/${cep}/restaurante/${restauranteId}`);
   }
 
-  formasDePagamento(restaurante): Observable<any> {
+  formasDePagamento(restaurante): Observable<any>  {
     return this.http.get(`${this.API}/restaurantes/${restaurante.id}/formas-de-pagamento`);
   }
 
@@ -64,6 +60,10 @@ export class RestauranteService {
 
   aprova(restaurante): Observable<any> {
     return this.http.patch(`${this.API}/admin/restaurantes/${restaurante.id}`, restaurante);
+  }
+
+  porCepEIdComDistancia(cep: string, restauranteId: string): Observable<any> {
+    return this.http.get(`${this.API}/restaurantes-com-distancia/${cep}/restaurante/${restauranteId}`);
   }
 
 }
